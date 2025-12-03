@@ -2,31 +2,23 @@ const express = require("express");
 
 const app = express();
 
+const {authAdim, authUser} = require('./middleware/auth')
 
-app.use('/',(req, res, next)=>{
-    //  res.send("response")
-    next();
+app.use('/admin', authAdim);
+
+app.get('/user',authUser, (req, res)=>{
+    res.send("user data")
 })
 
-app.get('/user', (req, res, next) => {
-    next();
-    console.log("route handler");
-
-},
- 
-     (req, res, next) => {
-        console.log("route handler");
-         next()      
-
-    },
-
-     (req, res, next) => {
-        console.log("route handler");
-         res.send("Response2")
-
-    },
-);
-
+app.post('/user/login', (req, res)=>{
+    res.send('user login')
+})
+app.get('/admin/getAllData', (req, res) => {
+    res.send("send all data ")
+})
+app.get('/admin/deleteAllData', (req, res) => {
+    res.send("delete  all data ")
+})
 
 app.listen(3000, (req, res) => {
     console.log("server listen on port 3000...");
