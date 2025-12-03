@@ -2,22 +2,16 @@ const express = require("express");
 
 const app = express();
 
-const {authAdim, authUser} = require('./middleware/auth')
-
-app.use('/admin', authAdim);
-
-app.get('/user',authUser, (req, res)=>{
-    res.send("user data")
+app.get('/getUserData', (req, res) => {
+    throw new Error("fygjhkn")
+    res.send("user data sent ")
 })
 
-app.post('/user/login', (req, res)=>{
-    res.send('user login')
-})
-app.get('/admin/getAllData', (req, res) => {
-    res.send("send all data ")
-})
-app.get('/admin/deleteAllData', (req, res) => {
-    res.send("delete  all data ")
+app.use('/',(err, req, res, next)=>{
+    if(err){
+        res.status(500).send("Somthing want wrong ")
+    }
+
 })
 
 app.listen(3000, (req, res) => {
