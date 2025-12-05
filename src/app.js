@@ -1,20 +1,33 @@
 const express = require("express");
+const { connectDB } = require('./config/database')
 
+const User = require('./models/user')
 const app = express();
 
-app.get('/getUserData', (req, res) => {
-    throw new Error("fygjhkn")
-    res.send("user data sent ")
-})
+app.post('/signup', async (req, res) => {
 
-app.use('/',(err, req, res, next)=>{
-    if(err){
-        res.status(500).send("Somthing want wrong ")
+    const user = new User({
+        firstName: "abel",
+        lastName: "assefa",
+        email: "abel@gmail.com",
+        password: "abel123"
+    });
+
+    try {
+        await user.save()
+        res.send("User added successfuly !")
+    }
+    catch(err){
+        res.status(400).send("Error saving the user:"+ err.message)
     }
 
 })
 
-app.listen(3000, (req, res) => {
-    console.log("server listen on port 3000...");
-
-});
+connectDB().then(() => {
+    console.log("Database connection is established")
+    app.listen(3000, (req, res) => {
+        console.log("server listen on port 3000...");
+    });
+}).catch((err) => {
+    console.error("Database cannot be connected!")
+})
