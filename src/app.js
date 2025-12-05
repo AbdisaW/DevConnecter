@@ -13,10 +13,36 @@ app.post('/signup', async (req, res) => {
         await user.save()
         res.send("User added successfuly !")
     }
-    catch(err){
-        res.status(400).send("Error saving the user:"+ err.message)
+    catch (err) {
+        res.status(400).send("Error saving the user:" + err.message)
     }
 
+})
+
+app.get('/user', async (req, res) => {
+    const userEmail = req.body.email;
+
+    try {
+
+        const user = await User.findOne({ email: userEmail })
+        if (!user) {
+            res.status(404).send("user is not found")
+        }
+        else res.send(user)
+
+
+    } catch (err) {
+        res.status(400).send("somthing want wrong!")
+    }
+})
+
+app.get('/feed', async (req, res)=>{
+    try {
+        const users = await User.find({});
+        res.send(users);
+    } catch (err) {
+        res.status(400).send("Somthing Want wrong !")
+    }
 })
 
 connectDB().then(() => {
